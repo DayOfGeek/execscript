@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ExecScript adaptive icon background: deep black-green #0A0F0A -->
+    <color name="ic_launcher_background">#0A0F0A</color>
+</resources>
