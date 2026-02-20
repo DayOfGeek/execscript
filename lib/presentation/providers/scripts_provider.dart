@@ -9,7 +9,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/models/script.dart';
 import '../../data/repositories/script_repository.dart';

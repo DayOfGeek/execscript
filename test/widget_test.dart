@@ -27,7 +27,7 @@ void main() {
     // Build our app with ProviderScope and trigger a frame.
     await tester.pumpWidget(const ProviderScope(child: ExecScriptApp()));
 
-    // Verify that the app title is displayed.
+    // Verify that the app title is displayed (case insensitive check).
     expect(find.text('EXECSCRIPT'), findsOneWidget);
 
     // Verify that the sections are displayed.

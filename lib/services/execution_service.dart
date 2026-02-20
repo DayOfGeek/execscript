@@ -9,7 +9,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-
 import '../data/models/execution.dart';
 import '../data/models/script.dart';
 import '../data/models/server.dart';
@@ -59,8 +58,10 @@ class ExecutionService {
 
       // Execute and stream output
       final outputBuffer = StringBuffer();
-      await for (final output
-          in SSHService.executeStream(session, scriptContent)) {
+      await for (final output in SSHService.executeStream(
+        session,
+        scriptContent,
+      )) {
         outputBuffer.write(output.content);
 
         yield ExecutionUpdate(
@@ -76,8 +77,9 @@ class ExecutionService {
       final exitCode = fullOutput.toLowerCase().contains('error') ? 1 : 0;
 
       execution = execution.copyWith(
-        status:
-            exitCode == 0 ? ExecutionStatus.completed : ExecutionStatus.failed,
+        status: exitCode == 0
+            ? ExecutionStatus.completed
+            : ExecutionStatus.failed,
         exitCode: exitCode,
         output: fullOutput,
         completedAt: DateTime.now(),
@@ -237,17 +239,25 @@ class ExecutionService {
       final isTmux = execution.tmuxSessionName!.startsWith('execscript-');
       final isActive = isTmux
           ? await TmuxService.isSessionActive(
-              session, execution.tmuxSessionName!)
+              session,
+              execution.tmuxSessionName!,
+            )
           : await TmuxService.isScreenSessionActive(
-              session, execution.tmuxSessionName!);
+              session,
+              execution.tmuxSessionName!,
+            );
 
       if (isActive) {
         // Still running - capture current output
         final output = isTmux
             ? await TmuxService.captureOutput(
-                session, execution.tmuxSessionName!)
+                session,
+                execution.tmuxSessionName!,
+              )
             : await TmuxService.captureScreenOutput(
-                session, execution.tmuxSessionName!);
+                session,
+                execution.tmuxSessionName!,
+              );
 
         await SSHService.disconnect(session);
 
@@ -256,9 +266,13 @@ class ExecutionService {
         // Completed - capture final output
         final output = isTmux
             ? await TmuxService.captureOutput(
-                session, execution.tmuxSessionName!)
+                session,
+                execution.tmuxSessionName!,
+              )
             : await TmuxService.captureScreenOutput(
-                session, execution.tmuxSessionName!);
+                session,
+                execution.tmuxSessionName!,
+              );
 
         await SSHService.disconnect(session);
 

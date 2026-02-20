@@ -9,24 +9,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../core/constants.dart';
 
 /// Service for securely storing and retrieving credentials
 class CredentialService {
   static const _storage = FlutterSecureStorage(
-    aOptions: AndroidOptions(
-      encryptedSharedPreferences: true,
-    ),
-    iOptions: IOSOptions(
-      accessibility: KeychainAccessibility.first_unlock,
-    ),
+    aOptions: AndroidOptions(encryptedSharedPreferences: true),
+    iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
   );
 
   /// Store a credential for a server
   static Future<void> storeCredential(
-      String serverKey, String credential) async {
+    String serverKey,
+    String credential,
+  ) async {
     final key = '${AppConstants.credentialKeyPrefix}$serverKey';
     await _storage.write(key: key, value: credential);
   }
